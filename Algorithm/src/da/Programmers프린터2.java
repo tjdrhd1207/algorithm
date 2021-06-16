@@ -60,7 +60,7 @@ public class Programmers프린터2 {
 				}
 			}
 			
-			if(flag){
+			if(flag == true){
 			//q.poll은 맨앞에꺼 제거
 			//q.offer은 맨뒤에 추가
 				q.offer(q.poll());
