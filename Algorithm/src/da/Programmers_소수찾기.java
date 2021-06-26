@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class Programmers_소수찾기 {
 
-	static ArrayList<String> list = new ArrayList<>();
-	
+	static Set<String> list = new HashSet<>();
+	static Set<Integer> arrayList = new HashSet<>();
+	static boolean visited[];
 	public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -25,12 +29,13 @@ public class Programmers_소수찾기 {
 		
 		int answer = 0;
 		
-		char arr[] = new char[numbers.length()];
-		
+		int arr[] = new int[numbers.length()];
+		visited = new boolean[numbers.length()]; 
 		for(int i=0; i<arr.length; i++){
-			char  num = numbers.charAt(i);
-		
+			int  num = numbers.charAt(i)-48;
+			
 			arr[i] = num;
+			visited[i] = false;
 			//System.out.println(arr[i]);
 		}
 		String result = "";
@@ -39,28 +44,44 @@ public class Programmers_소수찾기 {
 		for(int i=cnt; i>=1; i--) {
 		nCr(arr, i, result);
 		}
+		;
+		//System.out.println(list.toString());
 		
-		System.out.println(list.toString());
 		
-		
-		for(int i=0; i<list.size(); i++){
+		//String x[] = new String[list.size()];
+		String[] x = list.toArray(new String[list.size()]);
+		int[] sosuArr = new int[x.length];
+		for(int i=0; i<x.length; i++){
+			//
+			arrayList.add(Integer.parseInt(x[i]));
 			
-			int sosuCheck = Integer.parseInt(list.get(i));
-			System.out.println("sosuCheck : "+sosuCheck);
+		}
+		Iterator iter = arrayList.iterator();
+		int num = 0;
+		while(iter.hasNext()){
+			sosuArr[num] = (int) iter.next();
+			num++;
+		}
+		//System.out.println("여기왔나"+arrayList);
+		for(int i=0; i<list.size(); i++){
+			//Iterator<Integer> iter = list.iterator();
+			int sosuCheck = sosuArr[i];
+			//System.out.println("sosuCheck : "+sosuCheck);
 			double sosuSqrt = Math.sqrt(sosuCheck);
-			int sosuSqrtInt = (int) sosuSqrt;
+			int sosuSqrtInt = (int) sosuSqrt; 		
 			
 			int sosuCnt = 0;
-			
+			if(sosuCheck!=1) {
 			for(int j=1; j<=sosuSqrtInt; j++){
 				if((sosuCheck % j) == 0){
-					System.out.println("sosu뭐길래 : "+sosuCheck);
+					//System.out.println("sosu뭐길래 : "+sosuCheck);
 					sosuCnt++;
-					System.out.println("sosuCnt : "+sosuCnt);
+					//System.out.println("sosuCnt : "+sosuCnt);
 				}
 			}
 			if(sosuCnt==1){
 				answer++;
+				}
 			}
 			//sosuCnt = 0;
 		}
@@ -70,17 +91,22 @@ public class Programmers_소수찾기 {
 		return answer;
 	}
 	
-		public static void nCr(char[] arr, int len, String result){
+		public static void nCr(int[] arr, int len, String result){
 			int cnt = len;	
 		
 				if(cnt == 0 ){
-						System.out.println(result);
+						//System.out.println(result); 
 						list.add(result);
 						return;
+						
 				}
 				else {
 					for(int i=0; i<arr.length; i++){
-						nCr(arr, cnt-1, result+arr[i]);
+						if(visited[i] != true) {
+							visited[i] = true;
+							nCr(arr, cnt-1, result+arr[i]);
+							visited[i] = false;
+						}
 					}
 				}
 			
